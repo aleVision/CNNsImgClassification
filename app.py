@@ -6,7 +6,7 @@ from torchvision import models
 import requests
 
 # Load models from torchvision
-@st.cache(allow_output_mutation=True)
+@st.cache_resource
 def load_model(model_name):
     if model_name == "ResNet50":
         model = models.resnet50(pretrained=True)
@@ -28,35 +28,37 @@ def preprocess_image(image):
     image = transform(image).unsqueeze(0)  # Add batch dimension
     return image
 
-# Predict the class of the image
+# Predict the class of the image and return the confidence
 def predict_image_class(image, model):
     image = preprocess_image(image)
     outputs = model(image)
     _, predicted = torch.max(outputs, 1)
+    confidence = torch.nn.functional.softmax(outputs, dim=1)[0] * 100
+    predicted_class_confidence = confidence[predicted.item()].item()
     
     # Get class names from ImageNet
     labels_map = load_labels_map()
     predicted_class = labels_map[predicted.item()]
-    return predicted_class
+    return predicted_class, predicted_class_confidence
 
 # Load ImageNet class labels
-@st.cache(allow_output_mutation=True)
+@st.cache_data
 def load_labels_map():
     url = "https://raw.githubusercontent.com/anishathalye/imagenet-simple-labels/master/imagenet-simple-labels.json"
     labels = requests.get(url).json()
     return labels
 
-# Display ImageNet class labels in the app
+# Display ImageNet class labels in a scrollable text area
 def display_imagenet_classes():
     labels_map = load_labels_map()
-    st.markdown("### ImageNet Classes:")
-    st.write(", ".join(labels_map))
+    labels_str = "\n".join(labels_map)  # Combine all labels into a single string with newlines
+    st.text_area("ImageNet Classes", value=labels_str, height=300)  # Scrollable text area with the list
 
 # Title of the app
 st.title("Image Classification with PyTorch (Multiple Models)")
 
 st.markdown("""
-Upload an image and classify it using one of the latest pre-trained deep learning models in PyTorch! 
+Upload an image and classify it using one of the pre-trained deep learning models in PyTorch! 
 Choose from **ResNet50**, **EfficientNet**, or **MobileNetV2** and get instant predictions.
 """)
 
@@ -86,12 +88,15 @@ if uploaded_file is not None:
     
     st.write("Classifying using **{}**...".format(model_name))
     
-    # Predict the class of the image
-    predicted_class = predict_image_class(img, model)
+    # Predict the class of the image and get confidence
+    predicted_class, predicted_confidence = predict_image_class(img, model)
     
-    # Display the predicted class
-    st.write(f"**Prediction:** {predicted_class}")
-
-# Display ImageNet class labels for the user to explore
+    # Display the predicted class and confidence in a highlighted way
+    st.markdown(f"""
+    ### 🏆 **Predicted Class**: **{predicted_class}**  
+    **Confidence**: {predicted_confidence:.2f}%
+    """)
+    
+# Display ImageNet class labels in a scrollable text area (non-selectable)
 if st.checkbox("Show ImageNet Classes"):
     display_imagenet_classes()
