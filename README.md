@@ -1,6 +1,6 @@
 # Image Classification with PyTorch (Multiple Models)
 
-This project is a web application for **image classification** using multiple **pre-trained deep learning models** in PyTorch. Users can upload an image, choose from various models, and classify the image in real-time!
+This project is an interactive web application for **image classification** using multiple **pre-trained deep learning models** in PyTorch. Users can upload an image, choose from various models, and classify the image in real-time!
 
 ## 🚀 Live Web App
 Check out the live web app here:  
@@ -10,6 +10,8 @@ Check out the live web app here:
 - **Upload Image**: Upload any image (JPG, PNG) and classify it using a selected pre-trained model.
 - **Choose Model**: Select from three popular models: **ResNet50**, **EfficientNet**, or **MobileNetV2**.
 - **Real-time Classification**: Get instant predictions with the top predicted class displayed.
+- **Explore ImageNet Classes**: View the full list of **ImageNet** classes.
+- **Read Model Papers**: Learn more about each model by accessing the original research papers.
 
 ## 🛠️ Tech Stack
 - **Streamlit**: For building the interactive web interface.
@@ -41,6 +43,11 @@ Check out the live web app here:
 
 ## 🖼️ Example Use Case
 Upload an image of an **animal**, **vehicle**, or **object**, and the app will classify it using the selected model from ResNet, EfficientNet, or MobileNet.
+
+## 📄 Read More About Each Model
+- **ResNet (Residual Networks)**: [Paper](https://arxiv.org/abs/1512.03385)
+- **EfficientNet**: [Paper](https://arxiv.org/abs/1905.11946)
+- **MobileNetV2**: [Paper](https://arxiv.org/abs/1801.04381)
 
 ## 💡 Future Work
 - **Fine-tuning**: Add functionality to fine-tune the models on custom datasets.

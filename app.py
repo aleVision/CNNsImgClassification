@@ -46,11 +46,17 @@ def load_labels_map():
     labels = requests.get(url).json()
     return labels
 
+# Display ImageNet class labels in the app
+def display_imagenet_classes():
+    labels_map = load_labels_map()
+    st.markdown("### ImageNet Classes:")
+    st.write(", ".join(labels_map))
+
 # Title of the app
 st.title("Image Classification with PyTorch (Multiple Models)")
 
 st.markdown("""
-Upload an image and classify it using one of the pre-trained deep learning models in PyTorch! 
+Upload an image and classify it using one of the latest pre-trained deep learning models in PyTorch! 
 Choose from **ResNet50**, **EfficientNet**, or **MobileNetV2** and get instant predictions.
 """)
 
@@ -59,6 +65,14 @@ uploaded_file = st.file_uploader("Upload an image", type=["jpg", "png", "jpeg"])
 
 # Dropdown to select the model
 model_name = st.selectbox("Choose a model", ["ResNet50", "EfficientNet", "MobileNetV2"])
+
+# Links to model papers
+st.markdown("""
+### 📄 Read More About Each Model:
+- **ResNet (Residual Networks)**: [Paper](https://arxiv.org/abs/1512.03385)
+- **EfficientNet**: [Paper](https://arxiv.org/abs/1905.11946)
+- **MobileNetV2**: [Paper](https://arxiv.org/abs/1801.04381)
+""")
 
 # Load the selected model
 model = load_model(model_name)
@@ -77,3 +91,7 @@ if uploaded_file is not None:
     
     # Display the predicted class
     st.write(f"**Prediction:** {predicted_class}")
+
+# Display ImageNet class labels for the user to explore
+if st.checkbox("Show ImageNet Classes"):
+    display_imagenet_classes()
