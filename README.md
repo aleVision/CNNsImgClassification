@@ -4,7 +4,7 @@ This project is an interactive web application for **image classification** usin
 
 ## 🚀 Live Web App
 Check out the live web app here:  
-[Image Classification Web App](https://your-deployed-app-link.com)
+[Image Classification Web App](https://imgclassify.streamlit.app/)
 
 ## 🌟 Features
 - **Upload Image**: Upload any image (JPG, PNG) and classify it using a selected pre-trained model.
